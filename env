@@ -1,0 +1,35 @@
+export mybranch=devel/master
+export myid=wonrst
+export myfolder=~/tizen/nui
+
+cd ~
+$myfolder/dali/dali-core/build/scripts/dali_env -c
+dali-env/opt/bin/dali_env -s > setenv
+. setenv
+
+
+
+cd $myfolder/dali/dali-core/build/tizen
+cmake -DCMAKE_INSTALL_PREFIX=$DESKTOP_PREFIX -DCMAKE_BUILD_TYPE=Debug .
+make install -j8
+
+cd $myfolder/dali/dali-adaptor/build/tizen
+cmake -DCMAKE_INSTALL_PREFIX=$DESKTOP_PREFIX -DCMAKE_BUILD_TYPE=Debug .
+make install -j8
+
+cd $myfolder/dali/dali-toolkit/build/tizen
+cmake -DCMAKE_INSTALL_PREFIX=$DESKTOP_PREFIX -DCMAKE_BUILD_TYPE=Debug .
+make install -j8
+
+cd $myfolder/dali/dali-csharp-binder/build/tizen
+autoreconf --install
+./configure --prefix=$DESKTOP_PREFIX
+make install -j8
+
+cd $myfolder/dali/dali-demo/build/tizen
+cmake -DCMAKE_INSTALL_PREFIX=$DESKTOP_PREFIX -DCMAKE_BUILD_TYPE=Debug .
+make install -j8
+
+
+
+CXXFLAGS='-g -O0 --coverage' LDFLAGS='--coverage' cmake -DCMAKE_INSTALL_PREFIX=$DESKTOP_PREFIX -DCMAKE_BUILD_TYPE=Debug
